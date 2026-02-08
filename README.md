@@ -1,12 +1,8 @@
 Upper Haugh Weather Widget
 -----
 
-A horizontal widget, perfect for displying on a dashboard, slideshow, or kiosk, for Upper Haugh, Rawmarsh, Rotherham
+A widget, perfect for displying on a dashboard, slideshow, or kiosk, for Upper Haugh, Rawmarsh, Rotherham
 
-🖼️ Screenshot
---------------
-
-![Weather Widget Screenshot](https://raw.githubusercontent.com/adlaidyson-ffp/FFPMisc2/refs/heads/main/UHWeatherWidgetScreenshot.png)
 
 ✨ Features
 ----------
@@ -17,7 +13,7 @@ A horizontal widget, perfect for displying on a dashboard, slideshow, or kiosk, 
 *   **Shows condition description**: e.g. Broken Clouds
 *   **Can be embeded using HTML and iFrame**
 *   **Refreshes automatically every 2 minutes and updates**
-*   **Pulls weather data from my own backend [uhwappapi.adlaidyson.co.uk/weather](uhwappapi.adlaidyson.co.uk/weather) Data collected from Open Weather Map**
+*   **Pulls weather data from my own backend [api.upperhaughweather.uk/weather](api.upperhaughweather.uk/weather) Data collected from Open Weather Map**
     
 
 📜 Credits & License
@@ -31,6 +27,6 @@ A horizontal widget, perfect for displying on a dashboard, slideshow, or kiosk, 
 View Now!
 --------------------
 
-*   **Online Version**: [uhweather.adlaidyson.co.uk](uhweather.adlaidyson.co.uk)
+*   **Online Version**: [upperhaughweather.uk](upperhaughweather.uk)
 
 © Adlai Dyson | Fused Frame Photography. You may fork this project for your own use or use my instance!
