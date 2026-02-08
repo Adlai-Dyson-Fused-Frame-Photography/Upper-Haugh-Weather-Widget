@@ -3,149 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upper Haugh Widget (Ultra Compact)</title>
+  <title>Upper Haugh Compact</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* --- Fonts --- */
-    @font-face { font-family: 'Aptos'; src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-regular.woff2') format('woff2'); font-weight: 400; }
-    @font-face { font-family: 'Aptos'; src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-bold.woff2') format('woff2'); font-weight: 700; }
-
-    /* --- Variables --- */
-    :root {
-      --bg: #111827;
-      --bg-end: #1e374d;
-      --text: #ffffff;
-      --accent: #94fdf8;
-      --card-bg: rgba(30, 55, 77, 0.65);
-      --border: rgba(148, 253, 248, 0.2);
-    }
-
-    /* --- Main Layout --- */
-    html, body {
-      height: 100%;
+    /* Use system fonts if Aptos fails to load to prevent invisible text */
+    body {
       margin: 0;
       padding: 0;
+      height: 100vh;
+      width: 100vw;
+      font-family: 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #111827; /* Fallback */
+      background-image: linear-gradient(135deg, #111827 0%, #1e374d 100%);
+      color: #ffffff;
       overflow: hidden;
-      font-family: 'Aptos', sans-serif;
-      background-image: linear-gradient(135deg, var(--bg) 0%, var(--bg-end) 100%);
-      color: var(--text);
     }
 
     .widget-container {
-      height: 100%;
-      width: 100%;
-      padding: 8px; /* Minimal padding */
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      height: 100%;
+      padding: 6px;
+      box-sizing: border-box;
     }
 
+    /* Removed backdrop-filter for better compatibility */
     .glass-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: rgba(30, 55, 77, 0.85); 
+      border: 1px solid rgba(148, 253, 248, 0.3);
       border-radius: 12px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      padding: 10px 12px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* Pushes content apart */
       height: 100%;
+      padding: 8px;
       box-sizing: border-box;
-      gap: 5px; /* Minimal gap between sections */
     }
 
-    /* --- 1. Header (Compact) --- */
-    .header {
-      text-align: center;
-      flex-shrink: 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 5px;
-      margin-bottom: 2px;
-    }
-    .location {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--accent);
-      line-height: 1.1;
-      margin: 0;
-    }
-    .date {
-      font-size: 0.75rem;
-      opacity: 0.7;
-      margin-top: 1px;
-    }
+    /* Header */
+    .header { text-align: center; margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .location { font-size: 1.1rem; font-weight: bold; color: #94fdf8; margin: 0; }
+    .date { font-size: 0.7rem; opacity: 0.8; margin-bottom: 4px; }
 
-    /* --- 2. Current Weather (Side-by-Side) --- */
-    .current-weather {
+    /* Main Section */
+    .main-row {
       display: flex;
-      flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      flex: 0 1 auto; /* Allow shrinking */
+      gap: 10px;
+      flex: 1; /* Takes up available middle space */
     }
-    .temp-large {
-      font-size: 3rem; /* Adjusted for smaller screens */
-      font-weight: 300;
-      line-height: 1;
-    }
-    .weather-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .main-icon { font-size: 1.8rem; margin-bottom: 2px; }
-    .desc { font-size: 0.8rem; text-transform: capitalize; opacity: 0.9; text-align: center; }
+    .temp-val { font-size: 2.8rem; font-weight: 300; line-height: 1; }
+    .main-icon-box { text-align: center; }
+    .main-icon { font-size: 1.8rem; display: block; }
+    .desc { font-size: 0.75rem; text-transform: capitalize; }
 
-    /* --- 3. Hourly Strip (Tiny) --- */
-    .hourly-container {
+    /* Hourly Section - Simplified Flex */
+    .hourly-row {
       display: flex;
-      justify-content: space-between;
-      gap: 2px;
-      background: rgba(0,0,0,0.1);
+      justify-content: space-around;
+      background: rgba(0,0,0,0.2);
       border-radius: 8px;
-      padding: 4px;
-      flex-shrink: 0;
+      padding: 5px 0;
+      margin: 4px 0;
     }
-    .hour-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 1;
-    }
-    .hour-time { font-size: 0.65rem; opacity: 0.7; }
-    .hour-icon { font-size: 0.85rem; margin: 2px 0; }
-    .hour-temp { font-size: 0.75rem; font-weight: 700; }
+    .hour-item { text-align: center; font-size: 0.7rem; }
+    .h-time { color: #94fdf8; font-weight: bold; margin-bottom: 2px; }
+    .h-icon { font-size: 0.9rem; margin: 2px 0; }
+    .h-temp { font-weight: bold; }
 
-    /* --- 4. Meta Grid (No Boxes, Just Data) --- */
-    /* This saves the most vertical space */
-    .meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 10px;
-      row-gap: 4px;
-      flex-shrink: 0;
-      padding-top: 2px;
-    }
-    .meta-item {
-      display: flex;
+    /* Meta Grid - Replaced Grid with Flex Rows for compatibility */
+    .stats-container { display: flex; flex-direction: column; gap: 4px; }
+    .stats-row { display: flex; justify-content: space-between; }
+    .stat-box { 
+      background: rgba(255,255,255,0.05); 
+      padding: 4px 8px; 
+      border-radius: 6px; 
+      width: 48%; 
+      display: flex; 
+      justify-content: space-between; 
       align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
+      box-sizing: border-box;
     }
-    .meta-label { opacity: 0.7; font-size: 0.7rem; display: flex; align-items: center; gap: 6px; }
-    .meta-val { font-weight: 700; }
-    
+    .stat-label { font-size: 0.65rem; opacity: 0.7; }
+    .stat-val { font-size: 0.8rem; font-weight: bold; }
+
     /* Colors */
-    .aqi-good { color: #4caf50; }
-    .aqi-poor { color: #f44336; }
-    .text-yellow { color: #facc15; }
-    .text-blue { color: #60a5fa; }
-    .text-gray { color: #9ca3af; }
-    .text-white { color: #fff; }
-
+    .c-sun { color: #facc15; }
+    .c-rain { color: #60a5fa; }
+    .c-cloud { color: #9ca3af; }
   </style>
 </head>
 <body>
@@ -154,37 +99,41 @@
     <div class="glass-panel">
       
       <div class="header">
-        <h1 class="location">Upper Haugh</h1>
+        <div class="location">Upper Haugh</div>
         <div class="date" id="date">--</div>
       </div>
 
-      <div class="current-weather">
-        <div class="temp-large" id="current-temp">--°</div>
-        <div class="weather-right">
-          <i id="main-icon" class="fa-solid fa-spinner fa-spin main-icon"></i>
-          <span id="desc-text" class="desc">Loading</span>
+      <div class="main-row">
+        <div class="temp-val" id="temp">--°</div>
+        <div class="main-icon-box">
+          <i id="main-icon" class="fa-solid fa-circle-notch fa-spin"></i>
+          <div class="desc" id="desc">Loading</div>
         </div>
       </div>
 
-      <div class="hourly-container" id="hourly">
+      <div class="hourly-row" id="hourly">
         </div>
 
-      <div class="meta-grid">
-        <div class="meta-item">
-          <span class="meta-label"><i class="fa-solid fa-wind text-blue"></i> Wind</span>
-          <span class="meta-val" id="wind">--</span>
+      <div class="stats-container">
+        <div class="stats-row">
+          <div class="stat-box">
+            <span class="stat-label">Wind</span>
+            <span class="stat-val" id="wind">--</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Hum</span>
+            <span class="stat-val" id="hum">--</span>
+          </div>
         </div>
-        <div class="meta-item">
-          <span class="meta-label"><i class="fa-solid fa-droplet text-blue"></i> Hum</span>
-          <span class="meta-val" id="humidity">--</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label"><i class="fa-solid fa-sun text-yellow"></i> UV</span>
-          <span class="meta-val" id="uv">--</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label"><i class="fa-solid fa-smog text-gray"></i> AQI</span>
-          <span class="meta-val" id="aqi">--</span>
+        <div class="stats-row">
+          <div class="stat-box">
+            <span class="stat-label">UV</span>
+            <span class="stat-val" id="uv">--</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">AQI</span>
+            <span class="stat-val" id="aqi">--</span>
+          </div>
         </div>
       </div>
 
@@ -192,86 +141,60 @@
   </div>
 
   <script>
-    const API_URL = 'https://api.upperhaughweather.uk/weather';
-    const REFRESH_RATE = 120000; // 2 Minutes
+    const API = 'https://api.upperhaughweather.uk/weather';
 
-    function formatTime(ts) {
-      const d = new Date(ts * 1000);
-      const h = ((d.getHours() + 11) % 12) + 1;
-      return d.getHours() >= 12 ? `${h}pm` : `${h}am`;
+    function getIcon(id) {
+      if (id < 600) return { i: 'fa-cloud-showers-heavy', c: 'c-rain' };
+      if (id < 700) return { i: 'fa-snowflake', c: '' };
+      if (id === 800) return { i: 'fa-sun', c: 'c-sun' };
+      return { i: 'fa-cloud', c: 'c-cloud' };
     }
 
-    function getIconInfo(id) {
-      if (id < 600) return { cls: 'fa-cloud-showers-heavy', color: 'text-blue' };
-      if (id < 700) return { cls: 'fa-snowflake', color: 'text-white' };
-      if (id === 800) return { cls: 'fa-sun', color: 'text-yellow' };
-      if (id === 801 || id === 802) return { cls: 'fa-cloud-sun', color: 'text-gray' };
-      return { cls: 'fa-cloud', color: 'text-gray' };
-    }
-
-    async function fetchWeather() {
+    async function update() {
       try {
-        const res = await fetch(API_URL, { cache: 'no-store' });
-        if (!res.ok) throw new Error("API Error");
-        const data = await res.json();
-        const { weather, airPollution } = data; 
-        const curr = weather.current;
+        const r = await fetch(API, { cache: 'no-store' });
+        const d = await r.json();
+        const c = d.weather.current;
 
-        // 1. Header
-        const today = new Date();
-        document.getElementById('date').textContent = today.toLocaleDateString('en-GB', { 
-           day: 'numeric', month: 'short' 
+        // Date
+        const now = new Date();
+        document.getElementById('date').innerText = now.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+
+        // Current
+        document.getElementById('temp').innerText = Math.round(c.temp) + '°';
+        document.getElementById('desc').innerText = c.weather[0].main;
+        const icon = getIcon(c.weather[0].id);
+        document.getElementById('main-icon').className = `fa-solid ${icon.i} main-icon ${icon.c}`;
+
+        // Hourly (Top 4)
+        const hCont = document.getElementById('hourly');
+        hCont.innerHTML = '';
+        d.weather.hourly.slice(1, 5).forEach(h => {
+          const ico = getIcon(h.weather[0].id);
+          const time = new Date(h.dt * 1000).getHours();
+          const displayTime = time > 12 ? (time-12)+'pm' : (time===0?'12am':time+'am');
+          
+          hCont.innerHTML += `
+            <div class="hour-item">
+              <div class="h-time">${displayTime}</div>
+              <i class="fa-solid ${ico.i} h-icon ${ico.c}"></i>
+              <div class="h-temp">${Math.round(h.temp)}°</div>
+            </div>`;
         });
 
-        // 2. Main
-        document.getElementById('current-temp').textContent = Math.round(curr.temp) + '°';
-        document.getElementById('desc-text').textContent = curr.weather[0].main;
+        // Stats
+        document.getElementById('wind').innerText = Math.round(c.wind_speed * 2.23) + 'm';
+        document.getElementById('hum').innerText = c.humidity + '%';
+        document.getElementById('uv').innerText = Math.round(c.uvi);
         
-        const mainIconData = getIconInfo(curr.weather[0].id);
-        const mainIconEl = document.getElementById('main-icon');
-        mainIconEl.className = `fa-solid ${mainIconData.cls} main-icon ${mainIconData.color}`;
+        const aqiVal = d.airPollution?.list?.[0]?.main?.aqi || 1;
+        document.getElementById('aqi').innerText = ['Good','Fair','Mod','Poor','Bad'][aqiVal-1];
 
-        // 3. Hourly (Show 4 items)
-        const hourlyContainer = document.getElementById('hourly');
-        hourlyContainer.innerHTML = '';
-        weather.hourly.slice(1, 5).forEach(h => {
-            const div = document.createElement('div');
-            div.className = 'hour-item';
-            const iconData = getIconInfo(h.weather[0].id);
-            div.innerHTML = `
-                <div class="hour-time">${formatTime(h.dt)}</div>
-                <i class="fa-solid ${iconData.cls} hour-icon ${iconData.color}"></i>
-                <div class="hour-temp">${Math.round(h.temp)}°</div>
-            `;
-            hourlyContainer.appendChild(div);
-        });
-
-        // 4. Meta
-        document.getElementById('wind').textContent = Math.round(curr.wind_speed * 2.237) + 'mph';
-        document.getElementById('humidity').textContent = curr.humidity + '%';
-        
-        const uv = Math.round(curr.uvi);
-        const uvEl = document.getElementById('uv');
-        uvEl.textContent = uv;
-        uvEl.style.color = uv > 5 ? '#f44336' : '#fff';
-
-        const aqiEl = document.getElementById('aqi');
-        if (airPollution?.list?.[0]) {
-            const aqiVal = airPollution.list[0].main.aqi;
-            const aqiText = ['Good', 'Fair', 'Mod', 'Poor', 'Bad'][aqiVal - 1] || '-';
-            aqiEl.textContent = aqiText;
-            aqiEl.style.color = aqiVal > 3 ? '#f44336' : '#4caf50';
-        } else {
-            aqiEl.textContent = '-';
-        }
-
-      } catch (e) {
-        console.error("Widget Error:", e);
-      }
+      } catch (err) { console.log(err); }
     }
 
-    fetchWeather();
-    setInterval(fetchWeather, REFRESH_RATE);
+    update();
+    setInterval(update, 120000);
   </script>
 </body>
 </html>
