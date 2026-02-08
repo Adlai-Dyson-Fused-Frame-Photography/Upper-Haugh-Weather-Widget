@@ -3,172 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Upper Haugh Weather Widget</title>
+  <title>Upper Haugh Widget (Compact)</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* --- Font Setup (Aptos) --- */
-    @font-face {
-      font-family: 'Aptos';
-      src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-regular.woff2') format('woff2');
-      font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Aptos';
-      src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-bold.woff2') format('woff2');
-      font-weight: 700;
-      font-style: normal;
-    }
+    /* --- Fonts --- */
+    @font-face { font-family: 'Aptos'; src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-regular.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'Aptos'; src: url('https://cdn-eu.fusedframe.co.uk/fonts/aptos/aptos-bold.woff2') format('woff2'); font-weight: 700; }
 
-    /* --- Variables based on your website --- */
+    /* --- Variables --- */
     :root {
       --bg: #111827;
       --bg-end: #1e374d;
       --text: #ffffff;
-      --accent: #94fdf8; /* Cyan accent */
-      --card-bg: rgba(30, 55, 77, 0.5);
+      --accent: #94fdf8;
+      --card-bg: rgba(30, 55, 77, 0.6); /* Slightly more opaque for contrast */
       --border: rgba(148, 253, 248, 0.2);
-      --sec: #94fdf8;
-      --sec-light: rgba(148, 253, 248, 0.7);
     }
 
-    body {
+    /* --- Structure --- */
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
-      height: 100vh;
+      overflow: hidden; /* Prevent scrolling */
       font-family: 'Aptos', sans-serif;
       background-image: linear-gradient(135deg, var(--bg) 0%, var(--bg-end) 100%);
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden; /* Prevent scrolling on signage */
     }
 
-    /* Main Container */
     .widget-container {
+      height: 100%;
+      width: 100%;
+      padding: 10px; /* Reduced padding */
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      padding: 16px;
-      box-sizing: border-box;
     }
 
-    /* --- Glass Card Style --- */
     .glass-panel {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-      padding: 16px;
+      border-radius: 1rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      padding: 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       height: 100%;
+      box-sizing: border-box;
     }
 
-    /* --- Header Section --- */
-    .header {
-      text-align: center;
-      margin-bottom: 10px;
+    /* --- Header --- */
+    .header { text-align: center; flex-shrink: 0; margin-bottom: 5px; }
+    .location { 
+      font-size: 1.4rem; 
+      font-weight: 800; 
+      color: var(--accent); 
+      line-height: 1.1; 
+      margin: 0; 
     }
-    .location {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin: 0;
-      line-height: 1.2;
+    .date { 
+      font-size: 0.8rem; 
+      opacity: 0.8; 
+      margin-top: 2px; 
     }
-    .date {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      margin-top: 4px;
-      font-weight: 400;
-    }
-    .divider {
-      height: 1px;
-      background: rgba(255,255,255,0.15);
-      width: 60px;
-      margin: 10px auto;
+    .divider { 
+      height: 1px; 
+      background: rgba(255,255,255,0.15); 
+      width: 40%; 
+      margin: 8px auto; 
     }
 
-    /* --- Main Temp Section --- */
+    /* --- Main Temp (Side by Side now to save height) --- */
     .current-weather {
       display: flex;
-      flex-direction: column;
+      flex-direction: row; /* Horizontal layout */
       align-items: center;
       justify-content: center;
-      flex-grow: 1;
-      margin: 10px 0;
+      gap: 15px;
+      flex-grow: 1; /* Takes available space */
+      padding: 5px 0;
     }
     .temp-large {
-      font-size: 4.5rem;
+      font-size: 3.5rem; /* Smaller than before */
       font-weight: 300;
       line-height: 1;
     }
-    .desc {
-      font-size: 1.2rem;
-      text-transform: capitalize;
-      opacity: 0.9;
-      margin-top: 5px;
+    .weather-right {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-start;
     }
+    .main-icon { font-size: 2rem; margin-bottom: 4px; }
+    .desc { font-size: 0.9rem; text-transform: capitalize; opacity: 0.9; }
 
     /* --- Hourly Strip --- */
     .hourly-container {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
+      gap: 4px;
+      margin-bottom: 8px;
+      padding: 8px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      flex-shrink: 0;
     }
     .hour-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       background: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      padding: 8px 4px;
+      border-radius: 6px;
+      padding: 6px 2px;
       flex: 1;
-      min-width: 0; /* allows shrinking */
     }
-    .hour-time { font-size: 0.8rem; opacity: 0.8; font-weight: 700; color: var(--accent); }
-    .hour-icon { font-size: 1.2rem; margin: 6px 0; }
-    .hour-temp { font-size: 0.95rem; font-weight: 700; }
+    .hour-time { font-size: 0.7rem; opacity: 0.8; font-weight: 700; color: var(--accent); }
+    .hour-icon { font-size: 0.9rem; margin: 4px 0; }
+    .hour-temp { font-size: 0.8rem; font-weight: 700; }
 
-    /* --- Grid Details (Wind, Humidity, etc) --- */
+    /* --- Meta Grid (Compact) --- */
     .meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 6px;
+      flex-shrink: 0;
     }
     .meta-box {
       background: rgba(0,0,0,0.2);
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 8px;
+      padding: 6px 10px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
     }
     .meta-info { display: flex; flex-direction: column; }
-    .meta-label { font-size: 0.75rem; opacity: 0.7; }
-    .meta-value { font-size: 1.1rem; font-weight: 700; color: #fff; }
-    .meta-icon { font-size: 1.2rem; color: var(--accent); opacity: 0.8; }
+    .meta-label { font-size: 0.65rem; opacity: 0.7; }
+    .meta-value { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .meta-icon { font-size: 0.9rem; color: var(--accent); opacity: 0.8; }
 
     /* --- AQI Colors --- */
     .aqi-good { color: #4caf50; }
     .aqi-fair { color: #ffeb3b; }
     .aqi-mod { color: #ff9800; }
     .aqi-poor { color: #f44336; }
-    .aqi-very { color: #b71c1c; }
+    
+    /* --- Colors Helper --- */
+    .text-yellow { color: #facc15; }
+    .text-blue { color: #60a5fa; }
+    .text-gray { color: #9ca3af; }
+    .text-white { color: #fff; }
 
-    /* --- Loading/Error State --- */
-    #loading { opacity: 0.7; font-size: 0.9rem; text-align: center; }
   </style>
 </head>
 <body>
@@ -178,15 +165,15 @@
       
       <div class="header">
         <h1 class="location" id="location">Upper Haugh</h1>
-        <div class="date" id="date">Loading...</div>
+        <div class="date" id="date">--</div>
         <div class="divider"></div>
       </div>
 
       <div class="current-weather">
         <div class="temp-large" id="current-temp">--°</div>
-        <div class="desc" id="weather-desc">
-          <i id="main-icon" class="fa-solid fa-spinner fa-spin"></i>
-          <span id="desc-text">...</span>
+        <div class="weather-right">
+          <i id="main-icon" class="fa-solid fa-spinner fa-spin main-icon"></i>
+          <span id="desc-text" class="desc">Loading...</span>
         </div>
       </div>
 
@@ -195,31 +182,19 @@
 
       <div class="meta-grid">
         <div class="meta-box">
-          <div class="meta-info">
-            <span class="meta-label">Wind</span>
-            <span class="meta-value" id="wind">-- mph</span>
-          </div>
+          <div class="meta-info"><span class="meta-label">Wind</span><span class="meta-value" id="wind">--</span></div>
           <i class="fa-solid fa-wind meta-icon"></i>
         </div>
         <div class="meta-box">
-          <div class="meta-info">
-            <span class="meta-label">Humidity</span>
-            <span class="meta-value" id="humidity">--%</span>
-          </div>
+          <div class="meta-info"><span class="meta-label">Humidity</span><span class="meta-value" id="humidity">--</span></div>
           <i class="fa-solid fa-droplet meta-icon"></i>
         </div>
         <div class="meta-box">
-          <div class="meta-info">
-            <span class="meta-label">UV Index</span>
-            <span class="meta-value" id="uv">--</span>
-          </div>
+          <div class="meta-info"><span class="meta-label">UV Index</span><span class="meta-value" id="uv">--</span></div>
           <i class="fa-solid fa-sun meta-icon"></i>
         </div>
         <div class="meta-box">
-          <div class="meta-info">
-            <span class="meta-label">Air Quality</span>
-            <span class="meta-value" id="aqi">--</span>
-          </div>
+          <div class="meta-info"><span class="meta-label">Air Qual</span><span class="meta-value" id="aqi">--</span></div>
           <i class="fa-solid fa-smog meta-icon"></i>
         </div>
       </div>
@@ -228,137 +203,92 @@
   </div>
 
   <script>
-    // --- Config ---
     const API_URL = 'https://api.upperhaughweather.uk/weather';
     const REFRESH_RATE = 120000; // 2 Minutes
 
-    // --- Helpers ---
     function formatTime(ts) {
       const d = new Date(ts * 1000);
       const h = ((d.getHours() + 11) % 12) + 1;
       return d.getHours() >= 12 ? `${h}pm` : `${h}am`;
     }
 
-    function getIconClass(id) {
-      if (id < 600) return 'fa-cloud-showers-heavy text-blue-400';
-      if (id < 700) return 'fa-snowflake text-white';
-      if (id === 800) return 'fa-sun text-yellow-400';
-      if (id === 801 || id === 802) return 'fa-cloud-sun text-gray-300';
-      return 'fa-cloud text-gray-400';
+    function getIconInfo(id) {
+      if (id < 600) return { cls: 'fa-cloud-showers-heavy', color: 'text-blue' };
+      if (id < 700) return { cls: 'fa-snowflake', color: 'text-white' };
+      if (id === 800) return { cls: 'fa-sun', color: 'text-yellow' };
+      if (id === 801 || id === 802) return { cls: 'fa-cloud-sun', color: 'text-gray' };
+      return { cls: 'fa-cloud', color: 'text-gray' };
     }
 
-    // --- Main Fetch Logic ---
     async function fetchWeather() {
       try {
         const res = await fetch(API_URL, { cache: 'no-store' });
         if (!res.ok) throw new Error("API Error");
-
-        // Use the structure from your main site
         const data = await res.json();
         const { weather, airPollution } = data; 
         const curr = weather.current;
 
-        // 1. Update Header
+        // 1. Header
         const today = new Date();
         document.getElementById('date').textContent = today.toLocaleDateString('en-GB', { 
-          weekday: 'long', day: 'numeric', month: 'short' 
+          weekday: 'short', day: 'numeric', month: 'short' 
         });
 
-        // 2. Update Main Temp
+        // 2. Main Temp
         document.getElementById('current-temp').textContent = Math.round(curr.temp) + '°';
-        document.getElementById('desc-text').textContent = curr.weather[0].description;
+        document.getElementById('desc-text').textContent = curr.weather[0].main; // Short description (Main)
         
-        // Update Main Icon
+        const mainIconData = getIconInfo(curr.weather[0].id);
         const mainIconEl = document.getElementById('main-icon');
-        mainIconEl.className = `fa-solid ${getIconClass(curr.weather[0].id)}`;
-        
-        // Remove specific color classes from main icon to keep it clean white or accent if preferred? 
-        // Your site uses specific colors (yellow sun, blue rain). I kept the classes above.
-        // But for the large main icon, let's allow the colors to render:
-        // (The class list above includes text-colors like 'text-yellow-400', 
-        // so we need to make sure CSS handles those or we strip them if we want pure white)
-        // I will add inline styles for the colors to work without Tailwind.
-        applyTailwindColors(mainIconEl, getIconClass(curr.weather[0].id));
+        mainIconEl.className = `fa-solid ${mainIconData.cls} main-icon ${mainIconData.color}`;
 
-
-        // 3. Update Hourly (Show next 5 hours)
+        // 3. Hourly (Next 5)
         const hourlyContainer = document.getElementById('hourly');
-        hourlyContainer.innerHTML = ''; // clear old
+        hourlyContainer.innerHTML = '';
         
         weather.hourly.slice(1, 6).forEach(h => {
             const div = document.createElement('div');
             div.className = 'hour-item';
-            
-            const iconClass = getIconClass(h.weather[0].id);
-            const time = formatTime(h.dt);
-            const temp = Math.round(h.temp) + '°';
+            const iconData = getIconInfo(h.weather[0].id);
             
             div.innerHTML = `
-                <div class="hour-time">${time}</div>
-                <i class="fa-solid ${iconClass} hour-icon" style="${getColorStyle(iconClass)}"></i>
-                <div class="hour-temp">${temp}</div>
+                <div class="hour-time">${formatTime(h.dt)}</div>
+                <i class="fa-solid ${iconData.cls} hour-icon ${iconData.color}"></i>
+                <div class="hour-temp">${Math.round(h.temp)}°</div>
             `;
             hourlyContainer.appendChild(div);
         });
 
-        // 4. Update Meta Grid
-        // Wind
-        const windMph = Math.round(curr.wind_speed * 2.237);
-        document.getElementById('wind').textContent = `${windMph} mph`;
+        // 4. Meta
+        document.getElementById('wind').textContent = Math.round(curr.wind_speed * 2.237) + 'mph';
+        document.getElementById('humidity').textContent = curr.humidity + '%';
         
-        // Humidity
-        document.getElementById('humidity').textContent = `${curr.humidity}%`;
-        
-        // UV
         const uv = Math.round(curr.uvi);
         const uvEl = document.getElementById('uv');
         uvEl.textContent = uv;
-        // Simple color coding for UV
-        uvEl.style.color = uv > 6 ? '#f44336' : (uv > 3 ? '#ff9800' : '#fff');
+        uvEl.style.color = uv > 5 ? '#f44336' : '#fff';
 
-        // AQI
         const aqiEl = document.getElementById('aqi');
-        if (airPollution && airPollution.list && airPollution.list.length > 0) {
+        if (airPollution?.list?.[0]) {
             const aqiVal = airPollution.list[0].main.aqi;
-            const aqiText = ['Good', 'Fair', 'Mod', 'Poor', 'Very Poor'][aqiVal - 1] || '--';
+            const aqiText = ['Good', 'Fair', 'Mod', 'Poor', 'Bad'][aqiVal - 1] || '-';
             aqiEl.textContent = aqiText;
-            
-            // Apply color class
-            aqiEl.className = 'meta-value'; // reset
+            aqiEl.className = 'meta-value'; 
             if(aqiVal === 1) aqiEl.classList.add('aqi-good');
             else if(aqiVal === 2) aqiEl.classList.add('aqi-fair');
             else if(aqiVal === 3) aqiEl.classList.add('aqi-mod');
             else if(aqiVal >= 4) aqiEl.classList.add('aqi-poor');
         } else {
-            aqiEl.textContent = '--';
+            aqiEl.textContent = '-';
         }
 
       } catch (e) {
-        console.error("Weather Widget Error:", e);
-        // On signage, it's often better to show stale data than a blank error screen,
-        // but if it's the first load:
-        if(document.getElementById('current-temp').textContent === '--°') {
-            document.getElementById('weather-desc').textContent = "Offline / Retrying...";
-        }
+        console.error("Widget Error:", e);
       }
     }
 
-    // Helper to map Tailwind classes to inline styles (since we aren't loading full Tailwind)
-    function getColorStyle(cls) {
-        if(cls.includes('yellow')) return 'color: #facc15';
-        if(cls.includes('blue')) return 'color: #60a5fa';
-        if(cls.includes('gray')) return 'color: #9ca3af';
-        return 'color: #ffffff';
-    }
-
-    function applyTailwindColors(el, cls) {
-        el.style = getColorStyle(cls);
-    }
-
-    // --- Init ---
     fetchWeather();
     setInterval(fetchWeather, REFRESH_RATE);
-
   </script>
 </body>
 </html>
